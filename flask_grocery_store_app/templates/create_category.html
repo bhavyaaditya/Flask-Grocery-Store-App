@@ -1,0 +1,16 @@
+{%extends 'base_admin.html'%}
+{% block buttons%}    
+    <a href="{{url_for('manager_home',mngrID=mngrID)}}" type="button" class="btn btn-dark">Home</a> 
+    <a href="{{url_for('admin_login')}}" type="button" class="btn btn-warning">Log Out</a>
+{%endblock%}
+{% block welcome%} {{mngr.mngr_firstname}} {% endblock %}
+{%block content%}
+<form action="" method="POST">
+    <div class="container my-5">
+        <h5> Create New Category </h5><br>
+            {{form.category_name.label}}
+            {{form.category_name()}}
+            {{form.submit()}}
+    </div>
+</form>
+{%endblock%}

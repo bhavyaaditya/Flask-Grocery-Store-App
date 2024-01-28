@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{%block buttons%}
+    <a href="{{url_for('user_home',userID=userID)}}" type="button" class="btn btn-dark">Home</a> 
+    <a href="{{url_for('index')}}" type="button" class="btn btn-warning">Log Out</a>
+{%endblock%}
+
+{% block welcome%} {{user.user_firstname}} {% endblock %}
+
+{% block content %}
+
+<br>
+<h3 class="mx-1 my-3 text-center"> Your Orders </h3>
+<br>
+<div class="container">
+<!-- Cart Presented as Table -->
+  <table class="table">
+    <thead class="table-dark">
+        <tr>
+          <th>Order ID</th>
+          <th>Order Date & Time</th>
+          <th>Order Total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- For Loop to Display All Items in Cart-->
+        {% for key in uniqueOrders %}
+        
+        <tr>
+            <td>{{key}}</td><!-- Order ID-->
+            <td>{{uniqueOrders[key][0]}}</td><!--Order Date & Time-->
+            <td>{{uniqueOrders[key][1]}}</td><!-- Order Total-->
+            <td>
+                <a href="{{url_for('order_summary',userID=userID, orderID=key)}}" class="btn btn-warning"> 
+                    View Order Details
+                </a>
+            </td>
+        </tr>
+        
+        {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+
+{%endblock%}

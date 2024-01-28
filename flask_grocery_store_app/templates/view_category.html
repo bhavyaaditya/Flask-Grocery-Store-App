@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{%block buttons%}
+    <a href="{{url_for('user_home',userID=userID)}}" type="button" class="btn btn-dark">Home</a> 
+    <a href="{{url_for('index')}}" type="button" class="btn btn-warning">Log Out</a>
+{%endblock%}
+
+{% block welcome%} {{user.user_firstname}} {% endblock %}
+
+{%block content%}
+
+<div class="row my-2" style="background-color: aliceblue;">
+    <div class="row justify-content-end">
+        <h4> {{itemCat[catID][0]}} </h4> <!-- Category Name-->
+    </div>
+
+    <div class="container my-3" name="outer row">
+        <div class="row justify-content-start mx-5">
+            <!-- For loop for product cards -->
+            {% for i in itemCat[catID][1].keys()%}
+            <!--Card-->
+            <div class="col-2 mx-1 my-1">
+                <div class="card h-100 w-85">
+                    <img class="card-img-top h-50 w-100" src="/assets/uploads/{{i}}.jpg" style="background-size:auto" alt="Image not found"></img>
+                    <div class="card-body h-75 bg-light">
+                        <a href="{{url_for('buy_product', userID=userID, itemID=i)}}" style="color: crimson;"><h5 class="card-title">{{itemCat[catID][1][i][0]}}</h5></a>
+                        <p class="card-text">
+                            {{itemCat[catID][1][i][1]}}<br>
+                            <strong>{{itemCat[catID][1][i][2]}}</strong>
+                        </p>
+                    </div> 
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</div>
+{%endblock%}

@@ -1,0 +1,28 @@
+{%extends 'base_admin.html'%}
+{% block buttons%}    
+    <a href="{{url_for('manager_home',mngrID=mngrID)}}" type="button" class="btn btn-dark">Home</a> 
+    <a href="{{url_for('admin_login')}}" type="button" class="btn btn-warning">Log Out</a>
+{%endblock%}
+{% block welcome%} {{mngr.mngr_firstname}} {% endblock %}
+{%block content%}
+
+<ul>
+    <li>Choose image for product: <strong>{{item.item_name}} (Product ID: {{itemid}})</strong></li>
+
+    <li>Allowed extension - .jpg</li>
+
+    <li>For best results, ensure the image has aspect ratio 1:1.</li>
+
+    <li>Max file size is 4 MB and 1000px * 1000px.</li>
+</ul>
+<p>
+
+<form method="POST" enctype="multipart/form-data"> 
+    {{form.img_field()}}
+    {{form.img_submit()}}
+</form>
+</p>
+
+
+
+{%endblock%}

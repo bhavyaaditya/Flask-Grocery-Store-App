@@ -1,0 +1,206 @@
+{% extends 'base_admin.html' %}
+{% block buttons%}    
+    <a href="{{url_for('manager_home',mngrID=mngrID)}}" type="button" class="btn btn-dark">Home</a> 
+    <a href="{{url_for('admin_login')}}" type="button" class="btn btn-warning">Log Out</a>
+{%endblock%}
+
+{% block welcome%} {{mngr.mngr_firstname}} {% endblock %}
+{% block content %}
+
+<br>
+<div class="container">
+    <div class="row mx-10 justify-content-center text-center">
+        <div class="col-4">    
+            <a href="{{url_for('analytics',mngrID=mngrID)}}" class="btn btn-success text-center"><h5>View Analytics</h5></a>
+        </div>
+    </div>
+</div>
+
+<!--Stock Alert-->
+<div class="container" id="Inventory Alert"><div class="row"><p><h4> Inventory Alert </p></h4></div></div>
+<div class="container" id="Out of Stock Products">
+    <div class="row"><p><h5> Out of Stock Products </p></h5></div>
+    <!--Out of Stock Products-->
+    {% if stockOver_len > 0 %}
+        <table class="table">
+            <thead class="table-warning">
+                <tr>
+                    <th> Product ID </th>
+                    <th> Product Name </th>
+                    <th> Product Unit </th>
+                    <th> Max Units/Customer </th>
+                    <th> Price </th>
+                    <th class="text-center"> Actions </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in stockOver %}
+                <tr>
+                    <td> {{item.item_id}} </td>
+                    <td> {{item.item_name}} </td>
+                    <td> {{item.item_unit}}</td>
+                    <td> {{item.item_max_units_per_user}} </td>
+                    <td> {{item.item_price}} </td>
+                    <td>
+                        <a href="{{url_for('edit_product',mngrID=mngrID, itemID=item.item_id)}}" class="btn btn-warning">
+                            Edit
+                        </a> 
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p> No out of stock products </p>
+    {%endif%}
+</div>
+<div class="container" id="Low Stock Products">
+    <div class="row"><p><h5> Low Stock Products </p></h5></div>
+    <!-- Low Stock Products-->
+    {% if lowStock_len > 0 %}
+        <table class="table">
+            <thead class="table-warning">
+                <tr>
+                    <th> Product ID </th>
+                    <th> Product Name </th>
+                    <th> Product Unit </th>
+                    <th> Current Stock </th>
+                    <th> Max Units/Customer </th>
+                    <th> Price </th>
+                    <th class="text-center"> Actions </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in lowStock %}
+                <tr>
+                    <td> {{item.item_id}} </td>
+                    <td> {{item.item_name}} </td>
+                    <td> {{item.item_unit}}</td>
+                    <td> {{item.item_qty_avail}}</td>
+                    <td> {{item.item_max_units_per_user}}</td>
+                    <td> {{item.item_price}} </td>
+                    <td>
+                        <a href="{{url_for('edit_product',mngrID=mngrID, itemID=item.item_id)}}" class="btn btn-warning">
+                            Edit
+                        </a> 
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p> No low stock products </p>
+    {% endif %}
+</div>
+<br>
+<!-- Category Management -->
+<div class="container" id="Category Management">
+    <div class="row"><p><h4> Category Management </p></h4></div>
+    <!-- Create New Category -->
+    <div class="row">
+        <div class="col-4">
+            <a href="{{url_for('create_category',mngrID=mngrID)}}" class="btn btn-warning"> Create New Category </a>
+        </div>
+    </div>
+    <br>
+    <!-- Table Listing All Categories -->
+    <table class="table">
+        <thead class="table-warning">
+            <tr>
+                <th> Category ID </th>
+                <th> Category Name </th>
+                <th> View Products </th>
+                <th></th>
+                <th class="text-center"> Actions </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cat in cats %}
+            <tr>
+                <td> {{cat.cat_id}} </td><!-- Category ID -->
+                <td> {{cat.cat_name}} </td><!-- Category Name -->
+                <td><!-- Products in Category -->
+                    <div class="dropdown">
+                        <a class="btn btn-success dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          View Products
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for prod in item_cat[cat.cat_id][1] %}
+                            <li class="dropdown-item">{{item_cat[cat.cat_id][1][prod][0]}} (ID: {{prod}})</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </td>
+                <td>
+                    <!--Add New Products to Category-->
+                    <a href="{{url_for('add_item_to_category',mngrID=mngrID,catID=cat.cat_id)}}" class="btn btn-warning"> 
+                        Add Products 
+                    </a>
+                </td>
+                <td>
+                    <a href="{{url_for('edit_category',mngrID=mngrID, catID=cat.cat_id)}}" class="btn btn-warning">
+                        Edit
+                    </a> 
+                </td> 
+                <td>
+                    <a href="{{url_for('delete_category',mngrID=mngrID, catID=cat.cat_id)}}" class="btn btn-danger">
+                        Delete Category
+                    </a> 
+                </td> 
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<br><br><br>
+<!-- Product Management -->
+<div class="container" id="Product Management">
+    <div class="row"><p><h4> Product Management </p></h4></div>
+    <!-- Create New Product -->
+    <div class="row">
+        <div class="col-4">
+            <a href="{{url_for('create_product',mngrID=mngrID)}}" class="btn btn-warning"> Create New Product </a>
+        </div>
+    </div>
+    <br>
+    <!-- Table Listing All Products -->
+    <table class="table">
+        <thead class="table-warning">
+            <tr>
+              <th scope="col-1"> Product ID </th>
+              <th scope="col-3"> Product Name </th>
+              <th scope="col-1"> Unit </th>
+              <th scope="col-3"> Quantity Available </th>
+              <th scope="col-1"> Max Units/Customer </th>
+              <th scope="col-1"> Price/Unit </th>
+              <th scope="col-1"></th>
+              <th scope="col-1"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- For Loop to Display All Items in Cart-->
+            {% for item in items %}
+            <tr>
+                <td> <b> {{item.item_id}} </b> </td>            <!-- Item ID -->
+                <td> {{item.item_name}} </td>                   <!-- Item Name -->
+                <td> {{item.item_unit}} </td>                   <!-- Item Unit -->
+                <td> {{item.item_qty_avail}} </td>              <!-- Item Qty Available -->
+                <td> {{item.item_max_units_per_user}} </td>     <!-- Item Max Units/Customer -->
+                <td> ₹ {{item.item_price}} </td>                <!-- Item Price  -->
+                <td> 
+                    <a href="{{url_for('edit_product',mngrID=mngrID,itemID=item.item_id)}}" class="btn btn-warning">
+                        Edit
+                    </a> 
+                </td>
+                <td>
+                    <a href="{{url_for('delete_product',mngrID=mngrID, itemID=item.item_id)}}" class="btn btn-danger">
+                        Delete Product
+                    </a> 
+                </td> 
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{%extends 'base_admin.html'%}
+{% block buttons%}    
+    <a href="{{url_for('manager_home',mngrID=mngrID)}}" type="button" class="btn btn-dark">Home</a> 
+    <a href="{{url_for('admin_login')}}" type="button" class="btn btn-warning">Log Out</a>
+{%endblock%}
+{% block welcome%} {{mngr.mngr_firstname}} {% endblock %}
+{%block content%}
+
+<!-- Product in Category -->
+<div class="container" id="Products in Category">
+    <div class="row">
+        <h4> Category: {{thisCat.cat_name}}</h4>
+        <br>
+        <h4>Category ID: {{catID}}</h4>
+    </div>
+    <br>
+    <!-- Form to Rename Category-->
+    <div class="row">
+        <form action="" method="POST"> <!--TODO add form action-->
+            <strong>{{change_name.name.label}}</strong> {{change_name.name(value=thisCat.cat_name)}} {{change_name.submit}}
+        </form>
+        <br><br><br>
+    </div>
+    <!--Add New Products-->
+    <a href="{{url_for('add_item_to_category', mngrID=mngrID,catID=catID)}}" class="btn btn-warning"> Add Products </a>
+    <br><br>
+    <!-- Table Listing All Products in Category -->
+    <table class="table">
+        <thead class="table-warning">
+            <tr>
+              <th scope="col-1"> Product ID </th>
+              <th scope="col-3"> Product Name </th>
+              <th scope="col-2"> Quantity Available </th>
+              <th scope="col-1"> Max Units/Customer </th>
+              <th scope="col-2"> Price/Unit </th>
+              <th scope="col-2"></th> <!-- Delete from category -->
+              <th scope="col-1"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- For Loop to Display All Items in Category-->
+            {% for key in items_thisCat_keys %}
+            <tr>
+                <td> <b> {{key}} </b> </td>                                 <!-- Item ID -->
+                <td> {{items_thisCat[key][0]}} </td>                   <!-- Item Name -->         
+                <td> {{items_thisCat[key][1]}} </td>                   <!-- Item Qty Available -->
+                <td> {{items_thisCat[key][2]}} </td>                   <!-- Item Max Units/Customer -->
+                <td> ₹ {{items_thisCat[key][3]}} </td>                 <!-- Item Price  -->
+                <td>                                                        <!-- Delete from category -->
+                    <a href="{{url_for('delete_item_from_category', mngrID=mngrID,itemID=key,catID=catID)}}" class="btn btn-danger">
+                        Delete From Category
+                    </a>     
+                </td> 
+                <td>                                                        <!-- Edit Product  --> 
+                    <a href="{{url_for('edit_product', mngrID=mngrID,itemID=key)}}" class="btn btn-warning">
+                        Edit Product
+                    </a> 
+                </td> <!-- todo ADD EDIT FUNCTIONALITY HERE and check which manager logged in -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{%endblock%}

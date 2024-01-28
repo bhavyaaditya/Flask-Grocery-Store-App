@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{%block buttons%}
+    <a href="{{url_for('user_home',userID=userID)}}" type="button" class="btn btn-dark">Home</a> 
+    <a href="{{url_for('index')}}" type="button" class="btn btn-warning">Log Out</a>
+{%endblock%}
+
+{% block welcome%} {{user.user_firstname}} {% endblock %}
+
+{% block content %}
+<br>
+<h3 class="mx-1 my-3 text-center"> Order Details (Order ID: {{orderID}}) </h3>
+<h5 class="mx-1 my-3 text-center"> Order time (D/M/Y): {{orderTime}}</h5>
+<br>
+<div class="container">
+<!-- Order Presented as Table -->
+  <table class="table">
+    <thead>
+        <tr>
+          <th scope="col-1"> Product ID </th>
+          <th scope="col-4"> Product Name </th>
+          <th scope="col-1"> Quantity </th>
+          <th scope="col-3"> Unit </th>
+          <th scope="col-1"> Price/Unit </th>
+          <th scope="col-2"> Product Total </th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <!-- For Loop to Display All Items in Order-->
+        {% for row in order %}
+        <tr>
+            <td> <b> {{row.order_itemID}} </b> </td>          <!-- Item ID -->
+            <td> {{row.order_itemName}} </td>     <!-- Item Name {{Items.query.get(row.order_itemID).item_name}} -->
+            <td> {{row.order_qty}} </td>     <!-- Item Qty Ordered -->
+            <td> {{row.order_unit}} </td>     <!-- Item Unit -->
+            <td> {{row.order_price}} </td>     <!-- Item Price -->
+            <td> ₹ {{row.order_total}} </td>   <!-- Item Total  -->
+
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="container" style="background-color:#feffea;">
+<div class="row border rounded-start rounded-end">
+    <div class="col-4 text-end"> <b>Grand Total: </b></div>
+    <div class="col-4 text-center"><b> ₹ {{uniqueOrder.order_total}}</b></div>
+    <div class="col-4">
+        <div class="row"> 
+        <a href="{{url_for('user_orders', userID=userID)}}">  View past orders </a>
+        </div> 
+    </div>
+</div>
+</div>
+{% endblock %}

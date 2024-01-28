@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{%block buttons%}
+    <a href="{{url_for('user_home',userID=userID)}}" type="button" class="btn btn-dark">Home</a> 
+    <a href="{{url_for('index')}}" type="button" class="btn btn-warning">Log Out</a>
+{%endblock%}
+
+{% block welcome%} {{user.user_firstname}} {% endblock %}
+
+{% block content %}
+
+{% if cart_dict_keys_len == 0 %}  <!-- Empty Cart Warning -->
+  <br>
+  <div class="row text-center">
+    <h6 style="background-color:beige; color: crimson;">
+    Your cart is empty. Please add some products to place an order.
+    </h6>
+  </div>
+{%endif%}
+<br>
+<h3 class="mx-1 my-3 text-center"> Your Cart </h3>
+<br>
+<div class="container">
+<!-- Cart Presented as Table -->
+  <table class="table">
+    <thead>
+        <tr>
+          <th scope="col-1"> Product ID </th>
+          <th scope="col-3"> Product Name </th>
+          <th scope="col-1"> Quantity </th>
+          <th scope="col-3"> Unit </th>
+          <th scope="col-1"> Price/Unit </th>
+          <th scope="col-2"> Product Total </th>
+          <th scope="col-1"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- For Loop to Display All Items in Cart-->
+        {% for item in cart_dict_keys %}
+        <tr>
+            <td> <b> {{item}} </b> </td>          <!-- Item ID -->
+            <td> {{cart_dict[item][0]}} </td>     <!-- Item Name -->
+            <td> {{cart_dict[item][1]}} </td>     <!-- Item Qty Carted -->
+            <td> {{cart_dict[item][2]}} </td>     <!-- Item Unit -->
+            <td> {{cart_dict[item][3]}} </td>     <!-- Item Price -->
+            <td> ₹ {{cart_dict[item][4]}} </td>   <!-- Item Total  -->
+            <td> 
+                <a href="{{url_for('buy_product',userID=userID,itemID=item)}}" class="btn btn-warning">
+                  Edit
+                </a>
+                <a href="{{url_for('deleteFromCart', userID=userID, itemID=item)}}" class="btn btn-danger">
+                  Remove
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div>
+<form method="POST">
+  <div class="container" style="background-color:#feffea;">
+    <div class="row border rounded-start rounded-end">
+        <div class="col-4 text-end"> <b>Grand Total: </b></div>
+        <div class="col-4 text-center"><b> ₹ {{cart_total}}</b></div>
+        <div class="col-4">
+            <div class="row"> {{buy.buy}} </div>
+        </div>
+    </div>
+  </div>
+</form>
+
+<div class="container mx-5 my-5 text-center justify-content-center">
+  <a href="{{url_for('user_home', userID=userID)}}" class="btn btn-success">Continue Shopping</a>
+</div>
+{% endblock %}

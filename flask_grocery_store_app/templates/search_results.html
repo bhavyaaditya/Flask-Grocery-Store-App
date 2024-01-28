@@ -1,0 +1,49 @@
+{%extends 'base.html'%}
+{%block buttons%}
+    <a href="{{url_for('user_home',userID=userID)}}" type="button" class="btn btn-dark">Home</a> 
+    <a href="{{url_for('index')}}" type="button" class="btn btn-warning">Log Out</a>
+{%endblock%}
+{% block welcome%} {{user.user_firstname}} {% endblock %}
+{%block content%}
+<div class="container mx-auto my-3">    
+    <h3> Search Results</h3><br>
+        <h6> Products Matching Your Search</h6>
+            {% if searchItems_len > 0 %}
+                {% for res in searchItems %}
+                <ul>
+                    <li>
+                        <a href="{{url_for('buy_product',userID=userID, itemID=res.item_id)}}"> 
+                        
+                            <p>
+                                <b> {{res.item_id}} | {{res.item_name}} </b>
+                                <br>
+                                {{res.item_desc[:20] + '...'}}
+                            </p>
+                        </a>
+                    </li>  
+                </ul>    
+                {%endfor%}
+            {% else %}
+                <p> No matching products found </p>
+            {%endif%}
+
+        <h6> Categories Matching Your Search </h6>
+
+            {% if searchCategories_len > 0 %}
+                {% for res in searchCategories %}
+                <ul>
+                    <li>
+                        <a href="{{url_for('view_category',userID=userID, catID = res.cat_id)}}"> 
+                        
+                            <p>
+                                <b> {{res.cat_id}} | {{res.cat_name}} </b>
+                            </p>
+                        </a>
+                    </li>  
+                </ul> 
+                {%endfor%}
+            {% else %}
+                <p> No matching categories found</p>
+            {%endif%}
+</div>
+{%endblock%}

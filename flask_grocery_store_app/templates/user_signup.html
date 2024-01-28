@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{%block content%}
+
+<div class="container my-3 justify-content-center center">
+<form method="POST">
+    <div class="col-6 mx-auto justify-content-center align-content-center border rounded-start rounded-end " style="background-color: #feffea;">
+        <div class="row">
+            <div class="col">{{form.email.label}}</div>
+            <div class="col">{{form.email()}}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{form.password.label}}</div>
+            <div class="col">{{form.password()}}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{form.username.label}}</div>
+            <div class="col">{{form.username()}}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{form.firstname.label}}</div>
+            <div class="col">{{form.firstname()}}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{form.midname.label}}</div>
+            <div class="col">{{form.midname()}}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{form.lastname.label}}</div>
+            <div class="col">{{form.lastname()}}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{form.city.label}}</div>
+            <div class="col">{{form.city()}}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{form.pincode.label}}</div>
+            <div class="col">{{form.pincode()}}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{form.address.label}}</div>
+            <div class="col">{{form.address()}}</div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col">{{form.submit()}}</div>
+        </div>
+    </div>
+</form>
+</div>
+
+{%endblock%}

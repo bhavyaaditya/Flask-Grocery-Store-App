@@ -1,0 +1,53 @@
+{%extends 'base_admin.html'%}
+{% block buttons%}    
+    <a href="{{url_for('manager_home',mngrID=mngrID)}}" type="button" class="btn btn-dark">Home</a> 
+    <a href="{{url_for('admin_login')}}" type="button" class="btn btn-warning">Log Out</a>
+{%endblock%}
+{% block welcome%} {{mngr.mngr_firstname}} {% endblock %}
+{%block content%}
+
+<div class="container my-3" >
+    
+    <div class="row ">
+        <div class="col-7 border rounded-start rounded-end" style="background-color:#feffea;">
+            <!-- Heading -->
+            <div class="row text-center mx-1 my-1" style="background-color:#feffea ;">
+                <h4 style="font-family: Helvetica, sans-serif; color: crimson;"> Create New Product</h4>
+            </div>
+            <!-- CREATE PRODUCT FORM -->
+            <form method="POST">
+                <!-- Product Name -->
+                <div class="row mx-1 my-1 text-start">
+                    <strong>{{form.name.label}} </strong> {{form.name()}}
+                </div>
+                <!-- Product Unit -->
+                <div class="row mx-1 my-1 text-start">
+                    <strong>{{form.unit.label}}</strong>{{form.unit()}}
+                </div>
+                <!-- Product Price/Unit -->
+                <div class="row mx-1 my-1 text-start">
+                    <strong>{{form.price.label}}</strong>{{form.price()}}
+                </div>
+                <!-- Product Qty Available in Stock -->
+                <div class="row mx-1 my-1 text-start">
+                    <strong>{{form.qty_avail.label}}</strong>{{form.qty_avail()}}
+                </div>
+                <!-- Product Description -->
+                <div class="row mx-1 my-1 text-start">
+                    <strong>{{form.desc.label}}</strong>
+                    {{form.desc()}}
+                </div>
+                <!-- Product Max Purchase Quantity -->
+                <div class="row mx-1 my-1 text-start">
+                    <strong>{{form.max_units.label}}</strong>{{form.max_units()}}
+                </div>
+                <!-- Submit Button -->
+                <div class="row mx-1 my-1 text-start">
+                    {{form.submit()}}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

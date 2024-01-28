@@ -1,0 +1,63 @@
+{%extends 'base_admin.html'%}
+{% block buttons%}    
+    <a href="{{url_for('manager_home',mngrID=mngrID)}}" type="button" class="btn btn-dark">Home</a> 
+    <a href="{{url_for('admin_login')}}" type="button" class="btn btn-warning">Log Out</a>
+{%endblock%}
+{% block welcome%} {{mngr.mngr_firstname}} {% endblock %}
+{%block content%}
+<br><br>
+<div class="container" id="Products in Category">
+
+
+
+    <div class="row my-3">
+        <h5> Category: {{cat_name}}</h5>
+        <br>
+        <h5>Category ID: {{catID}}</h5>
+    </div>
+    
+    <!-- Table Listing All Products Not in Category -->
+    <table class="table">
+        <thead class="table-warning">
+            <tr>
+              <th scope="col-1"> Product ID </th>
+              <th scope="col-3"> Product Name </th>
+              <th scope="col-2"> Quantity Available </th>
+              <th scope="col-1"> Max Units/Customer </th>
+              <th scope="col-2"> Price/Unit </th>
+              <th scope="col-3">Add to Category: {{cat_name}}</th> <!-- Add to category -->
+            </tr>
+        </thead>
+    <form action="" method="POST">
+        <tbody>
+            <!-- For Loop to Display All Items Not in Category-->
+            {% for key in not_inCat %}
+            <tr>
+                <td> <b> {{key}} </b> </td>                            <!-- Item ID -->
+                <td> {{not_inCat[key][0]}} </td>                   <!-- Item Name -->         
+                <td> {{not_inCat[key][1]}} </td>                   <!-- Item Qty Available -->
+                <td> {{not_inCat[key][2]}} </td>                   <!-- Item Max Units/Customer -->
+                <td> ₹ {{not_inCat[key][3]}} </td>                 <!-- Item Price  -->
+                <td>                                                   <!-- Delete from category -->
+                    <input type="checkbox" value="{{key}}" name="addToCat">     
+                </td> 
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="row justify-content-end">    
+        <div class="col-2">
+            <a href="{{url_for('edit_category',mngrID=mngrID,catID=catID)}}" class="btn btn-danger">
+                Go Back
+            </a>
+        </div>
+        <div class="col-2"> 
+            <input type="submit" class="btn btn-success">
+        </div>
+    </div>  
+    </form>
+</div>
+
+
+
+{%endblock%}

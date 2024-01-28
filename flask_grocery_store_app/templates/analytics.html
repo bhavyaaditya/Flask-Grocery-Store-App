@@ -1,0 +1,142 @@
+{%extends 'base_admin.html'%}
+
+{%block extra%}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.3/dist/chart.umd.min.js"></script>
+{%endblock%}
+
+{% block buttons%}    
+    <a href="{{url_for('manager_home',mngrID=mngrID)}}" type="button" class="btn btn-dark">Home</a> 
+    <a href="{{url_for('admin_login')}}" type="button" class="btn btn-warning">Log Out</a>
+{%endblock%}
+
+{% block welcome%} {{mngr.mngr_firstname}} {% endblock %}
+
+{% block content %}
+
+<!--{{itemSales}}<br>
+{{catSalesDict}}<br>
+{{catSales}}-->
+
+<div class="contianer">
+    <div class="row mx-5 my-5 justify-content-center">
+        <div class="col-2 mx-1 text-center border rounded border-start border-end" style="background-color: blanchedalmond;">
+            <h6>Total Orders</h6>
+        </div>
+        <div class="col-1 text-start border rounded border-start border-end">
+            {{order_count}}
+        </div>
+        <div class="col-2 mx-1 text-center border rounded border-start border-end" style="background-color: blanchedalmond;">
+            <h6>Total Sales</h6>
+        </div>
+        <div class="col-1 text-start border rounded border-start border-end">
+            {{order_total}}
+        </div>
+        <div class="col-2 mx-1 text-center border rounded border-start border-end" style="background-color: blanchedalmond;">
+            <h6>Total Users</h6>
+        </div>
+        <div class="col-1 text-start border rounded border-start border-end">
+            {{user_count}}
+        </div>
+    </div>
+    
+    <div class="row mx-5 my-5 justify-content-center">
+        <div class="col-2 mx-1 text-center border rounded border-start border-end" style="background-color:#d4f4ff;">
+            <h6>Avg. Order Value</h6>
+        </div>
+        <div class="col-1 text-start border rounded border-start border-end">
+            {{avg_orderValue}}
+        </div>
+        <div class="col-2 mx-1 text-center border rounded border-start border-end" style="background-color: #d4f4ff;">
+            <h6>Avg. Sales Per User</h6>
+        </div>
+        <div class="col-1 text-start border rounded border-start border-end">
+            {{avg_salePerUser}}
+        </div>
+        <div class="col-2 mx-1 text-center border rounded border-start border-end" style="background-color: #d4f4ff;">
+            <h6>Avg. Orders Per User</h6>
+        </div>
+        <div class="col-1 text-start border rounded border-start border-end">
+            {{avg_ordersPerUser}}
+        </div>
+    </div>
+</div>
+
+<!-- Chart JS Graphs -->
+<div class="wrapper">
+    <div class="container">
+        <div class="row">    
+            <div class="col-6 text-center justify-content-center">
+                <h4>Top Products Based on Sales (₹) </h4>
+                <canvas id="itemSales" width="400" height='400'></canvas>
+            </div>
+            <div class="col-6 text-center justify-content-center">
+                <h4> Top Categories Based on Sales (₹) </h4>
+                <canvas id="catSales" width="400" height='400'></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- itemSales Chart -->
+<script>
+    var ctx = document.getElementById('itemSales').getContext('2d');
+    var doughChart = new Chart(ctx,{
+        type: 'doughnut',
+        data: {
+            labels: {{labels_itemSales | safe}},
+            datasets: [
+                {
+                    label: 'Sales (₹)',
+                    data: {{data_itemSales | safe}}
+                }
+            ]
+        },
+
+        options:{
+            responsive: false,
+            plugins: {
+                        legend: {
+                                    position: 'bottom',
+                                },
+                        title: {
+                                    display: false,
+                                    text: 'Product Wise Sales (₹)'
+                                }
+                    }
+                }
+        }
+    );
+</script>
+
+<!-- catSales Chart -->
+<script>
+    var ctx = document.getElementById('catSales').getContext('2d');
+    var doughChart = new Chart(ctx,{
+        type: 'doughnut',
+        data: {
+            labels: {{labels_catSales | safe}},
+            datasets: [
+                {
+                    label: 'Sales (₹)',
+                    data: {{data_catSales | safe}}
+                }
+            ]
+        },
+
+        options:{
+            responsive: false,
+            plugins: {
+                        legend: {
+                                    position: 'bottom',
+                                },
+                        title: {
+                                    display: false,
+                                    text: 'Category Wise Sales (₹)'
+                                }
+                    }
+                }
+        }
+    );
+</script>
+
+{%endblock%}
